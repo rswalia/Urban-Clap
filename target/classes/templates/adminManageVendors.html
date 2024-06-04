@@ -1,0 +1,211 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+    <!-- HEADER FRAGMENT -->
+    <head>
+    <div th:insert="header"></div>
+    <title>Admin Manage Vendors</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function renderVendors()
+        {
+            var url = "/renderVendors";
+
+            fetch(url)
+                    .then(response => response.text())
+                    .then(ans => showRenderVendors(ans));
+        }
+
+        function showRenderVendors(ans)
+        {
+            console.log(ans);
+
+            var mainobj = JSON.parse(ans);
+            console.log(mainobj);
+
+            var arr = mainobj.ans;
+
+            var s = "";
+
+            s += "<table class=\"table table-bordered table-hover text-center\">";
+            s += "<thead>";
+            s += "<tr>";
+            s += "<th>Photo</th>";
+            s += "<th>Name</th>";
+            s += "<th>Email</th>";
+            s += "<th>City</th>";
+            s += "<th>Service</th>";
+            s += "<th>SubService</th>";
+            s += "<th>Price</th>";
+            s += "<th>Status</th>";
+            s += "<th>Action</th>";
+            s += "</tr>";
+            s += "</thead>";
+            s += "<tbody>";
+
+            for (var i = 0; i < arr.length; i++)
+            {
+                var obj = arr[i];
+
+                s += "<tr>";
+                s += "<td><img src=\"" + obj.vphoto + "\" alt=\"This is alt image\" style=\"width: 70px; height: 70px\" class=\"rounded-circle\" /></td>";
+                s += "<td><p class=\"fw-bold\">" + obj.vname + "</p></td>";
+                s += "<td>" + obj.vemail + "</td>";
+                s += "<td>" + obj.vcity + "</td>";
+                s += "<td>" + obj.vservice + "</td>";
+                s += "<td>" + obj.vsservice + "</td>";
+                s += "<td>" + obj.vprice + "</td>";
+                s += "<td id=\"vstatus\">" + obj.vstatus + "</td>";
+                if(obj.vstatus==="pending")
+                {
+                    s += "<td><input type=\"button\" value=\"Approve\" class=\"btn btn-lg btn-outline-success\" onclick=\"approveVendor('" + obj.vemail + "')\" />";
+                }
+                else
+                {
+                    s += "<td><input type=\"button\" value=\"Block\" class=\"btn btn-lg btn-outline-danger\" onclick=\"blockVendor('" + obj.vemail + "')\" /></td>";
+                }
+//                s += "<td><input type=\"button\" value=\"Approve\" class=\"btn btn-lg btn-outline-success\" onclick=\"approveVendor('" + obj.vemail + "')\" /> <input type=\"button\" value=\"Block\" class=\"btn btn-lg btn-outline-danger\" onclick=\"blockVendor('" + obj.vemail + "')\" /> </td>";
+                s += "</tr>";
+            }
+            s += "</tbody>";
+            s += "</table>";
+
+            document.getElementById("d1").innerHTML = s;
+        }
+
+        function approveVendor(vemail)
+        {
+//            alert(vemail);
+            var url = "/approveVendor?vemail=" + vemail;
+
+            fetch(url)
+                    .then(response => response.text())
+                    .then(ans => showApproveVendor(ans));
+        }
+
+        function showApproveVendor(ans)
+        {
+            if (ans === "success")
+            {
+//                document.getElementById("vstatus").innerHTML = "approved";
+//                alert(ans);
+                renderVendors();
+            } else
+            {
+                Swal.fire(ans);
+            }
+        }
+
+        function blockVendor(vemail)
+        {
+//            alert(vemail);
+            var url = "/blockVendor?vemail=" + vemail;
+
+            fetch(url)
+                    .then(response => response.text())
+                    .then(ans => showBlockVendor(ans));
+        }
+
+        function showBlockVendor(ans)
+        {
+            if (ans === "success")
+            {
+//                document.getElementById("vstatus").innerHTML = "pending";
+//                alert(ans);
+                renderVendors();
+            } else
+            {
+                Swal.fire(ans);
+            }
+        }
+
+        function approveAllVendors()
+        {
+            var url = "/approveAllVendors";
+
+            fetch(url)
+                    .then(response => response.text())
+                    .then(ans => showApproveAllVendors(ans));
+        }
+
+        function showApproveAllVendors(ans)
+        {
+            renderVendors();
+        }
+    </script>
+</head>
+
+<body onload="renderVendors()">
+
+
+    <!-- ADMIN NAV -->
+    <div th:insert="admin_nav"></div>
+
+    <!-- Body main wrapper start -->
+    <main>
+
+        <div class="breadcrumb__area breadcrumb-space overflow-hidden banner-home-bg ">
+            <div class="banner-home__middel-shape inner-top-shape"></div>
+            <div class="container">
+                <div class="banner-all-shape-wrapper">
+                    <div class="banner-home__banner-shape-1 first-shape">
+                        <img class="upDown-top" src="assets/imgs/banner-1/banner-shape-1.svg" alt="img not found">
+                    </div>
+                    <div class="banner-home__banner-shape-2 second-shape">
+                        <img class="upDown-bottom" src="assets/imgs/banner-1/banner-shape-2.svg" alt="img not found">
+                    </div>
+                    <div class="right-shape">
+                        <img class="zooming" src="assets/imgs/inner-img/inner-right-shape.svg" alt="img not found">
+                    </div>
+                </div>
+                <div class="row align-items-center justify-content-between">
+                    <div class="col-12">
+                        <div class="breadcrumb__content text-center">
+                            <div class="breadcrumb__title-wrapper mb-15 mb-sm-10 mb-xs-5">
+                                <h1 class="breadcrumb__title color-white wow fadeIn animated" data-wow-delay=".1s">Admin Manage Vendors</h1>
+                            </div>
+                            <div class="breadcrumb__menu wow fadeIn animated" data-wow-delay=".5s">
+                                <nav>
+                                    <ul>
+                                        <li><span><a href="/adminHome" target="_blank">Admin Home</a></span></li>
+                                        <li class="active"><span>Admin Manage Vendors</span></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="main-team__title-wrapper text-center m-5">
+                        <h6 class="main-team__title-wrapper-subtitle">Our Vendors</h6>
+                        <h2 class="main-team__title-wrapper-title">Manage All Vendors</h2>
+                    </div>    
+                </div>
+            </div>
+
+
+            <div id="d1">
+                TABLE WILL BE SHOWN HERE
+            </div>
+
+            <div class="text-center m-5">
+            <button type="button" class="btn btn-success btn-lg w-100" onclick="approveAllVendors()">Approve All</button>
+            </div>
+            
+        </div>
+
+    </main>
+
+    <!-- FOOTER FRAGMENT -->
+    <div th:insert="footer"></div>
+
+</body>
+
+
+<!-- Mirrored from rrdevs.net/demos/html/printfix/sing-in.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 24 Apr 2024 07:05:57 GMT -->
+</html>

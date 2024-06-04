@@ -1,0 +1,104 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+    <!-- HEADER FRAGMENT -->
+    <head>
+    <div th:insert="header"></div>
+    <title>Vendor Home</title>
+</head>
+
+<body>
+
+
+    <!-- VENDOR NAV -->
+    <div th:insert="vendor_nav"></div>
+
+    <!-- Body main wrapper start -->
+    <main>
+
+        <div class="breadcrumb__area breadcrumb-space overflow-hidden banner-home-bg ">
+            <div class="banner-home__middel-shape inner-top-shape"></div>
+            <div class="container">
+                <div class="banner-all-shape-wrapper">
+                    <div class="banner-home__banner-shape-1 first-shape">
+                        <img class="upDown-top" src="assets/imgs/banner-1/banner-shape-1.svg" alt="img not found">
+                    </div>
+                    <div class="banner-home__banner-shape-2 second-shape">
+                        <img class="upDown-bottom" src="assets/imgs/banner-1/banner-shape-2.svg" alt="img not found">
+                    </div>
+                    <div class="right-shape">
+                        <img class="zooming" src="assets/imgs/inner-img/inner-right-shape.svg" alt="img not found">
+                    </div>
+                </div>
+                <div class="row align-items-center justify-content-between">
+                    <div class="col-12">
+                        <div class="breadcrumb__content text-center">
+                            <div class="breadcrumb__title-wrapper mb-15 mb-sm-10 mb-xs-5">
+                                <h1 class="breadcrumb__title color-white wow fadeIn animated" data-wow-delay=".1s">Vendor Home</h1>
+                            </div>
+                            <div class="breadcrumb__menu wow fadeIn animated" data-wow-delay=".5s">
+                                <nav>
+                                    <ul>
+                                        <li><span><a href="/vendorLogin" target="_blank">Vendor Login</a></span></li>
+                                        <li class="active"><span>Vendor Home</span></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="latest-team__area overflow-hidden main-team__area section-space">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="main-team__title-wrapper text-center mb-40">
+                            <h2 class="main-team__title-wrapper-title" th:text="'Welcome '+ ${session.vname}" ></h2>
+                        </div>    
+                    </div>
+                </div>
+                <div class="row p-relative mb-minus-30">
+                    <div class="col-xl-4 col-6">
+                        <a href="/vendorEditProfile" target="_blank" class="our-gallery__item wow fadeIn animated" data-wow-delay=".6s">
+                            <img src="assets/imgs/vendor-home/edit_profile.jpg" alt="images not found" class="img-fluid">
+                            <div class="overlay">
+                                <h3>Edit Profile</h3>
+                            </div>
+                            <span class="hover"></span>
+                       </a>
+                    </div>
+
+                    <div class="col-xl-4 col-6">
+                        <a href="/vendorManageSlots" target="_blank" class="our-gallery__item wow fadeIn animated" data-wow-delay=".6s">
+                            <img src="assets/imgs/vendor-home/manage_slots.jpg" alt="images not found" class="img-fluid">
+                            <div class="overlay">
+                                <h3>Manage Slots</h3>
+                            </div>
+                            <span class="hover"><i class="fa-regular fa-plus"></i></span>
+                        </a>
+                    </div>
+
+                    <div class="col-xl-4 col-6">
+                        <a href="/vendorManagePhotos" target="_blank" class="our-gallery__item wow fadeIn animated" data-wow-delay=".7s">
+                            <img src="assets/imgs/vendor-home/add_photos.jpg" alt="images not found" class="img-fluid">
+                            <div class="overlay">
+                                <h3>Manage Photos</h3>
+                            </div>
+                            <span class="hover"><i class="fa-regular fa-plus"></i></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER FRAGMENT -->
+    <div th:insert="footer"></div>
+
+</body>
+
+
+<!-- Mirrored from rrdevs.net/demos/html/printfix/sing-in.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 24 Apr 2024 07:05:57 GMT -->
+</html>

@@ -1,0 +1,272 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+    <!-- HEADER FRAGMENT -->
+    <head>
+    <div th:insert="header"></div>
+    <title>Vendor Manage Slots</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function renderVendorBookings()
+        {
+            var url = "/renderVendorBookings";
+            fetch(url)
+                    .then(response => response.text())
+                    .then(ans => showRenderVendorBookings(ans));
+        }
+
+        function showRenderVendorBookings(ans)
+        {
+//            alert(ans);
+            console.log(ans);
+            var mainobj = JSON.parse(ans);
+            console.log(mainobj);
+            var arr = mainobj.ans;
+            var s = "";
+            s += "<table class=\"table table-bordered table-hover text-center\">";
+            s += "<thead>";
+            s += "<tr>";
+            s += "<th>Date</th>";
+            s += "<th>User Photo</th>";
+            s += "<th>User Name</th>";
+            s += "<th>User Email</th>";
+            s += "<th>Total Price</th>";
+            s += "<th>Payment Type</th>";
+            s += "<th>Status</th>";
+            s += "<th>Action</th>";
+            s += "<th>More Info</th>";
+            s += "</tr>";
+            s += "</thead>";
+            s += "<tbody>";
+            for (var i = 0; i < arr.length; i++)
+            {
+                var obj = arr[i];
+//                alert(obj.booking_id);
+                s += "<tr>";
+                s += "<td>" + obj.date + "</td>";
+                s += "<td><img src=\"" + obj.photo + "\" alt=\"This is alt image\" style=\"width: 70px; height: 70px\" class=\"rounded-circle\" /></td>";
+                s += "<td><p class=\"fw-bold\">" + obj.name + "</p></td>";
+                s += "<td>" + obj.email + "</td>";
+                s += "<td>" + obj.total_price + "</td>";
+                s += "<td>" + obj.payment_type + "</td>";
+                s += "<td>" + obj.status + "</td>";
+                if (obj.status === "pending")
+                {
+                    s += "<td><input type=\"button\" value=\"Approve\" class=\"btn btn-lg btn-outline-success\" onclick=\"approveUserPayment('" + obj.booking_id + "')\" />";
+                } else
+                {
+                    s += "<td><input type=\"button\" value=\"Block\" class=\"btn btn-lg btn-outline-danger\" onclick=\"blockUserPayment('" + obj.booking_id + "')\" /></td>";
+                }
+
+                s += ` <td>
+            <!-- Button to Open the Modal -->
+            <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#myModal" onclick="renderBookingDetail(` + obj.booking_id + `)">
+                       Check Slots
+                   </button>
+                </td>`;
+
+                s += "</tr>";
+            }
+            s += "</tbody>";
+            s += "</table>";
+
+            document.getElementById("d1").innerHTML = s;
+        }
+
+        // Check Slots
+        function renderBookingDetail(booking_id)
+        {
+            var url = "/renderBookingDetail?booking_id=" + booking_id;
+            fetch(url)
+                    .then(response => response.text())
+                    .then(ans => showRenderBookingDetail(ans));
+        }
+
+        function showRenderBookingDetail(ans)
+        {
+//            alert(ans);
+
+            var mainobj = JSON.parse(ans);
+            console.log(mainobj);
+
+            var arr = mainobj.ans;
+
+            var s = "";
+
+            s += "<table class=\"table table-hover\">";
+            s += "<thead>";
+            s += "<tr>";
+            s += "<th>Start Slot</th>";
+            s += "<th>End Slot</th>";
+            s += "</tr>";
+            s += "</thead>";
+            s += "<tbody>";
+            for (var i = 0; i < arr.length; i++)
+            {
+                var obj = arr[i];
+                s += "<tr>";
+                s += "<td>" + obj.start_slot + "</td>";
+                s += "<td>" + obj.end_slot + "</td>";
+                s += "</tr>";
+            }
+            s += "</tbody>";
+
+            document.getElementById("mm").innerHTML = s;
+        }
+        
+        // Approve/Block User Payment
+        function approveUserPayment(booking_id)
+        {
+//            alert(booking_id);
+            var url = "/approveUserPayment?booking_id=" + booking_id;
+
+            fetch(url)
+                    .then(response => response.text())
+                    .then(ans => showApproveUserPayment(ans));
+        }
+
+        function showApproveUserPayment(ans)
+        {
+            if (ans === "success")
+            {
+                renderVendorBookings();
+            } else
+            {
+                Swal.fire(ans);
+            }
+        }
+
+        function blockUserPayment(booking_id)
+        {
+//            alert(vemail);
+            var url = "/blockUserPayment?booking_id=" + booking_id;
+            
+            fetch(url)
+                    .then(response => response.text())
+                    .then(ans => showBlockUserPayment(ans));
+        }
+
+        function showBlockUserPayment(ans)
+        {
+            if (ans === "success")
+            {
+                renderVendorBookings();
+            } else
+            {
+                Swal.fire(ans);
+            }
+        }
+
+        function approveAllUsersPayment()
+        {
+            var url = "/approveAllUsersPayment";
+
+            fetch(url)
+                    .then(response => response.text())
+                    .then(ans => showApproveAllUsersPayment(ans));
+        }
+
+        function showApproveAllUsersPayment(ans)
+        {
+            Swal.fire(ans);
+            renderVendorBookings();
+        }
+    </script>
+</head>
+
+
+<body onload="renderVendorBookings()">
+
+    <!-- ADMIN NAV -->
+    <div th:insert="vendor_nav"></div>
+
+    <!-- Body main wrapper start -->
+    <main>
+        <div class="breadcrumb__area breadcrumb-space overflow-hidden banner-home-bg ">
+            <div class="banner-home__middel-shape inner-top-shape"></div>
+            <div class="container">
+                <div class="banner-all-shape-wrapper">
+                    <div class="banner-home__banner-shape-1 first-shape">
+                        <img class="upDown-top" src="assets/imgs/banner-1/banner-shape-1.svg" alt="img not found">
+                    </div>
+                    <div class="banner-home__banner-shape-2 second-shape">
+                        <img class="upDown-bottom" src="assets/imgs/banner-1/banner-shape-2.svg" alt="img not found">
+                    </div>
+                    <div class="right-shape">
+                        <img class="zooming" src="assets/imgs/inner-img/inner-right-shape.svg" alt="img not found">
+                    </div>
+                </div>
+                <div class="row align-items-center justify-content-between">
+                    <div class="col-12">
+                        <div class="breadcrumb__content text-center">
+                            <div class="breadcrumb__title-wrapper mb-15 mb-sm-10 mb-xs-5">
+                                <h1 class="breadcrumb__title color-white wow fadeIn animated" data-wow-delay=".1s">Vendor Manage Slots</h1>
+                            </div>
+                            <div class="breadcrumb__menu wow fadeIn animated" data-wow-delay=".5s">
+                                <nav>
+                                    <ul>
+                                        <li><span><a href="/vendorHome" target="_blank">Vendor Home</a></span></li>
+                                        <li class="active"><span></span>Vendor Manage Slots</li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="main-team__title-wrapper text-center m-5">
+                        <!--<h6 class="main-team__title-wrapper-subtitle">Our Vendors</h6>-->
+                        <h2 class="main-team__title-wrapper-title">Vendor Bookings</h2>
+                    </div>    
+                </div>
+            </div>
+        </div>
+
+        <div id="d1">
+            TABLE WILL BE SHOWN HERE
+        </div>
+        
+        <div class="text-center m-5">
+            <button type="button" class="btn btn-success btn-lg w-100" onclick="approveAllUsersPayment()">Approve All</button>
+        </div>
+
+        <!-- The Modal -->
+        <div class="modal" id="myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Booking Detail</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body" >
+                        <div id="mm" ></div>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER FRAGMENT -->
+    <div th:insert="footer"></div>
+
+</body>
+
+
+<!-- Mirrored from rrdevs.net/demos/html/printfix/sing-in.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 24 Apr 2024 07:05:57 GMT -->
+</html>

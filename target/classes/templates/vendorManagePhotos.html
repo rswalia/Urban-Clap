@@ -1,0 +1,225 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+    <!-- HEADER FRAGMENT -->
+    <head>
+    <div th:insert="header"></div>
+    <title>Vendor Manage Photos</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function addPhoto()
+        {
+//            alert("Go");
+            
+            var ph = document.getElementById("ph").files[0];
+            
+            var url = "/addPhoto";
+            
+            var formdata = new FormData();
+
+            formdata.append("ph", ph);
+
+            fetch(url, {method: "POST", body: formdata})      // POST : URL Hidden
+                    .then(response => response.text())
+                    .then(ans => showAddPhoto(ans));
+        }
+        
+        function showAddPhoto(ans)
+        {
+            if (ans === "success")
+            {
+                Swal.fire({
+                    title: "Success!",
+                    text: "Profile Added Succcessfully !!!",
+                    icon: "success"
+                });
+
+                document.getElementById("d1").innerHTML = "Photo Added Succcessfully !!!";
+                alreadyAddedPhotos();
+            } else if (ans === "fail")
+            {
+                Swal.fire({
+                    title: "Oops...",
+                    text: "Duplicate Entry Not Allowed ...",
+                    icon: "error"
+                });
+            } else
+            {
+                Swal.fire(ans);
+            }
+        }
+        
+        function alreadyAddedPhotos()
+        {
+            var url = "/alreadyAddedPhotos";
+            
+            fetch(url)
+                    .then(response => response.text())
+                    .then(ans => showAlreadyAddedPhotos(ans));
+        }
+        
+        function showAlreadyAddedPhotos(ans)
+        {
+            console.log(ans);
+            
+            var mainobj = JSON.parse(ans);
+            console.log(mainobj);
+            
+            var arr = mainobj.ans;
+            var s = "";
+            
+            s += "<div class=\"row\">";
+            for(var i=0; i<arr.length; i++)
+            {
+                var obj = arr[i];
+                s += "<div class=\"card col-sm-3\" >";
+                    s += "<img class=\"card-img-top img-thumbnail\" style=\"width:400px; height:200px\" src=\""+ obj.photo +"\" alt=\"Card image\">";
+                    s += "<div class=\"card-body text-center\">";
+                    s += "<input type=\"button\" value=\"Delete\" class=\"btn btn-danger btn-lg\" onclick=\"deletePhoto('"+ obj.pid +"')\" />";
+                    s += "</div>";
+                s += "</div>";    
+            }
+            s += "</div>";
+            
+            document.getElementById("d2").innerHTML = s;
+        }
+        
+        function deletePhoto(pid)
+        {
+//            alert(pid);
+            
+            var url = "/deletePhoto?pid="+pid;
+            
+            fetch(url)
+                    .then(response => response.text())
+                    .then(ans => showDeletePhoto(ans));
+        }
+        
+        function showDeletePhoto(ans)
+        {
+            if (ans === "success")
+            {
+                Swal.fire({
+                    title: "Success!",
+                    text: "Profile Deleted Succcessfully !!!",
+                    icon: "success"
+                });
+                alreadyAddedPhotos();
+            } else if (ans === "fail")
+            {
+                Swal.fire({
+                    title: "Oops...",
+                    text: "Invalid City Name...",
+                    icon: "error"
+                });
+            } else
+            {
+                Swal.fire(ans);
+            }
+        }
+    </script>
+</head>
+
+<body onload="alreadyAddedPhotos()">
+
+    <!-- VENDOR NAV -->
+    <div th:insert="vendor_nav"></div>
+
+    <!-- Body main wrapper start -->
+    <main>
+
+        <div class="breadcrumb__area breadcrumb-space overflow-hidden banner-home-bg ">
+            <div class="banner-home__middel-shape inner-top-shape"></div>
+            <div class="container">
+                <div class="banner-all-shape-wrapper">
+                    <div class="banner-home__banner-shape-1 first-shape">
+                        <img class="upDown-top" src="assets/imgs/banner-1/banner-shape-1.svg" alt="img not found">
+                    </div>
+                    <div class="banner-home__banner-shape-2 second-shape">
+                        <img class="upDown-bottom" src="assets/imgs/banner-1/banner-shape-2.svg" alt="img not found">
+                    </div>
+                    <div class="right-shape">
+                        <img class="zooming" src="assets/imgs/inner-img/inner-right-shape.svg" alt="img not found">
+                    </div>
+                </div>
+                <div class="row align-items-center justify-content-between">
+                    <div class="col-12">
+                        <div class="breadcrumb__content text-center">
+                            <div class="breadcrumb__title-wrapper mb-15 mb-sm-10 mb-xs-5">
+                                <h1 class="breadcrumb__title color-white wow fadeIn animated" data-wow-delay=".1s">Vendor Manage Photos</h1>
+                            </div>
+                            <div class="breadcrumb__menu wow fadeIn animated" data-wow-delay=".5s">
+                                <nav>
+                                    <ul>
+                                        <li><span><a href="/vendorHome" target="_blank">Vendor Home</a></span></li>
+                                        <li class="active"><span>Vendor Manage Photos</span></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--contact-us-start-->
+        <section class="contact-us__area section-space overflow-hidden">
+            <div class="container">
+                <div class="row align-items-center" style="height:800px">
+                    <div class="col-xl-5">
+                        <div class="main-team-details__first-img">
+                            <img src="assets/imgs/vendor-home/add_photos.jpg" alt="img not found" class="img-thumbnail">
+                        </div>
+                    </div>
+
+                    <div class="col-xl-7">
+                        <div class="contact-us__form-wrapper mb-30 mb-xs-25">
+                            <h3 class="section__title mb-10 wow fadeInLeft animated text-center" data-wow-delay=".3s">Add New Photo</h3>
+                            <!--<p class="mb-40 mb-sm-25 mb-xs-20 wow fadeInLeft animated" data-wow-delay=".5s">You can also reach out to us by phone or email are many variations</p>-->
+
+                            <div class="container">
+                                <form class="contact-us__form" id="contact-us__form">
+                                    <div class="row wow fadeInLeft animated" data-wow-delay=".9s">
+                                        <div class="col-sm-8">
+                                            <div class="contact-us__input">
+                                                <input type="file" style="width: 100%" id="ph" name="ph" accept="image/*" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-4">
+                                            <input type="button"  value="Add Photo" class="rr-btn mt-30" onclick="addPhoto()"/>
+                                        </div>
+                                        <div class="col-sm-12" id="d1">
+                                            ANSWER WILL BE SHOWN HERE
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row align-items-center">
+                    <div class="col-xl-12 text-center mb-5">
+                        <h1>Already Added Photos</h1>
+                    </div>
+                    <div class="col-xl-12" id="d2">
+                        TABLE WILL BE SHOWN HERE
+                    </div>
+                </div>
+                
+            </div>
+        </section>
+        <!--contact-us-end-->
+
+    </main>
+
+
+
+    <!-- FOOTER FRAGMENT -->
+    <div th:insert="footer"></div>
+</body>
+
+
+<!-- Mirrored from rrdevs.net/demos/html/printfix/sing-in.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 24 Apr 2024 07:05:57 GMT -->
+</html>

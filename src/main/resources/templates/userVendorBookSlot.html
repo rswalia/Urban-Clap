@@ -1,0 +1,194 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+    <head>
+    <div th:insert="header"></div>
+    <title>User Vendor Book Slot</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    
+    <script>
+            function go() {
+                var s = document.getElementById("datepicker").value;
+                var email = document.getElementById("vemail").innerText;
+                console.log(s);
+                var url = "./view_slots?email=" + email + "&date=" + s;
+                fetch(url)
+                        .then(response => response.text())
+                        .then(ans => renderhtml(ans));
+
+            }
+
+            var slot_amount = 0;
+            function renderhtml(ans) {
+                var mainobj = JSON.parse(ans);
+                console.log(mainobj);
+                var arr = mainobj.ans;
+                var count = 1;
+                var output = '<table class="table table-hover">';
+                output += ' <tr>';
+                output += ' <th>index number</th>';
+                output += '<th>start slot</th>';
+                output += '<th>end slot</th>';
+
+                output += '<th>status</th>';
+                output += '</tr>';
+                for (var i = 0; i < arr.length; i++) {
+                    var obj = arr[i];
+                    output += '<tr>';
+                    if (obj.status === "Booked") {
+                        output += '<td><input type="checkbox" disabled/></td>';
+                    } else {
+                        output += '<td><input type="checkbox" name="c1" id="check" value="' + obj.start_slot + '" onchange="slot(this)" /></td>';
+                    }
+                    output += '<td>' + obj.start_slot + '</td>';
+                    output += '<td>' + obj.end_slot + '</td>';
+                    output += '<td>' + obj.status + '</td>';
+                    slot_amount = obj.slot_amount;
+
+                    output += '</tr>';
+                    count++;
+                }
+                output += '</table>';
+                document.getElementById("table").innerHTML = output;
+
+            }
+
+            var count = 0;
+            var total = 0;
+            function slot(checkbox) {
+
+                if (checkbox.checked) {
+
+                    count++;
+                } else {
+
+                    count--;
+                }
+
+                total = count * slot_amount;
+                var output = '<table class="table table-hover">';
+                output += '<tr>';
+                output += '<td> Number of slots </td>';
+                output += '<td>' + count + '</td>';
+                output += '</tr>';
+                output += '<tr>';
+                output += '<td> total value </td>';
+                output += '<td>' + total + '</td>';
+                output += '</tr>';
+
+                output += '</table>';
+                output += '<input type="button" class="rr-btn" value="click on the button to pay the value" onclick="pay()"/>';
+                document.getElementById("slot").innerHTML = output;
+            }
+            
+            var allslots = '';
+            function pay() {
+
+                var c = document.getElementsByName("c1");
+                var date = document.getElementById("datepicker").value;
+                var email = document.getElementById("vemail").innerText;
+                console.log(c);
+                for (var i = 0; i < c.length; i++) {
+
+                    if (c[i].checked) {
+                        allslots += c[i].value + ",";
+                    }
+                }
+                window.location.href = "/payment?date=" + date + "&email=" + email + "&total=" + total + "&slots=" + allslots + " ";
+            }
+
+        </script>
+
+
+</head>
+<body>
+
+    <!-- USER NAV -->
+    <div th:insert="user_nav"></div>
+
+
+    <!-- Body main wrapper start -->
+    <main>
+
+        <div id="vemail" th:text="${vemail}" style="display:none"></div>
+
+        <div class="breadcrumb__area breadcrumb-space overflow-hidden banner-home-bg ">
+            <div class="banner-home__middel-shape inner-top-shape"></div>
+            <div class="container">
+                <div class="banner-all-shape-wrapper">
+                    <div class="banner-home__banner-shape-1 first-shape">
+                        <img class="upDown-top" src="assets/imgs/banner-1/banner-shape-1.svg" alt="img not found">
+                    </div>
+                    <div class="banner-home__banner-shape-2 second-shape">
+                        <img class="upDown-bottom" src="assets/imgs/banner-1/banner-shape-2.svg" alt="img not found">
+                    </div>
+                    <div class="right-shape">
+                        <img class="zooming" src="assets/imgs/inner-img/inner-right-shape.svg" alt="img not found">
+                    </div>
+                </div>
+                <div class="row align-items-center justify-content-between">
+                    <div class="col-12">
+                        <div class="breadcrumb__content text-center">
+                            <div class="breadcrumb__title-wrapper mb-15 mb-sm-10 mb-xs-5">
+                                <h1 class="breadcrumb__title color-white wow fadeIn animated" data-wow-delay=".1s">Vendor Book Slot</h1>
+                            </div>
+                            <div class="breadcrumb__menu wow fadeIn animated" data-wow-delay=".5s">
+                                <nav>
+                                    <ul>
+                                        <li><span><a href="/userVendorDetails">User Vendor Details</a></span></li>
+                                        <li class="active"><span>Vendor Book Slot</span></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container text-center">
+
+            <h3>Choose Date</h3>
+            <p>Date: <input type="text" id="datepicker" style="background-color: #e3d5da"></p>
+            <input type="button" onclick="go()" value="Get Data" class="rr-btn"/>
+
+        </div>
+        
+        <div class="row">
+            <div class="col-sm-12 m-3  " id="table" >
+
+            </div>
+
+        </div>
+        
+        <div class="row">
+            <div class="col-sm-4">
+
+            </div>
+            <div class="col-sm-4 m-3" id="slot">
+
+            </div>
+            <div class="col-sm-4">
+
+            </div>
+        </div>
+
+    </main>
+
+
+
+    <!-- FOOTER FRAGMENT -->
+    <div th:insert="footer"></div>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $("#datepicker").datepicker();
+        });
+    </script>
+</body>
+
+
+<!-- Mirrored from rrdevs.net/demos/html/printfix/team-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 24 Apr 2024 07:05:55 GMT -->
+</html>

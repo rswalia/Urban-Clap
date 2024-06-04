@@ -1,0 +1,253 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+    <!-- HEADER FRAGMENT -->
+    <head>
+    <div th:insert="header"></div>
+    <title>Admin Manage Services</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+
+//        TEXT + FILE
+        function addService()
+        {
+//            alert("Go");
+
+            var sname = document.getElementById("sname").value;
+            var sdesc = document.getElementById("sdesc").value;
+            var ph = document.getElementById("ph").files[0];    // File
+
+            var url = "/addService";
+
+            var formdata = new FormData();
+
+            formdata.append("sname", sname);
+            formdata.append("sdesc", sdesc);
+            formdata.append("ph", ph);
+
+            fetch(url, {method: "POST", body: formdata})      // POST : URL Hidden
+                    .then(response => response.text())
+                    .then(ans => showAddService(ans));
+        }
+
+        function showAddService(ans)
+        {
+            if (ans === "success")
+            {
+                Swal.fire({
+                    title: "Success!",
+                    text: "Service Added Succcessfully !!!",
+                    icon: "success"
+                });
+
+                document.getElementById("d1").innerHTML = "Service Added Succcessfully !!!";
+                alreadyAddedServices();
+            } else if (ans === "fail")
+            {
+                Swal.fire({
+                    title: "Oops...",
+                    text: "Duplicate Entry Not Allowed ...",
+                    icon: "error"
+                });
+            } else
+            {
+                Swal.fire(ans);
+            }
+        }
+
+//        Table
+        function alreadyAddedServices()
+        {
+            var url = "/alreadyAddedServices";
+
+            fetch(url)
+                    .then(response => response.text())
+                    .then(ans => showAlreadyAddedServices(ans));
+        }
+
+        function showAlreadyAddedServices(ans)
+        {
+            console.log(ans);
+
+            var mainobj = JSON.parse(ans);
+            console.log(mainobj);
+
+            var arr = mainobj.ans;
+
+            var s = "";
+
+            s += "<table class=\"table table-striped\">";
+            s += "<tr>";
+            s += "<th>Service Name</th>";
+            s += "<th>Service Desc</th>";
+            s += "<th>Photo</th>";
+            s += "<th>Operation</th>";
+            s += "</tr>";
+
+            for (var i = 0; i < arr.length; i++)
+            {
+                var obj = arr[i];
+                s += "<tr>";
+                s += "<td>" + obj.sname + "</td>";
+                s += "<td>" + obj.sdesc + "</td>";
+                s += "<td><img src=\"" + obj.sphoto + "\" class=\"img-thumbnail\" style=\"width:200px; height:100px\" /></td>";
+                s += "<td><input type=\"button\" value=\"Delete Service\" class=\"btn btn-outline-danger btn-lg\" onclick=\"deleteService('" + obj.sname + "')\" /> <input type=\"button\" value=\"Sub Services\" class=\"btn btn-outline-primary btn-lg\" onclick=\"goToSubServices('" + obj.sname + "', '" + obj.sphoto + "')\" > </td>";
+                s += "</tr>";
+            }
+            s += "</table>";
+
+            document.getElementById("d2").innerHTML = s;
+        }
+
+        function deleteService(sname)
+        {
+//            alert(sname);
+
+            var url = "/deleteService?sname=" + sname;
+
+            fetch(url)
+                    .then(response => response.text())
+                    .then(ans => showDeleteService(ans));
+        }
+
+        function showDeleteService(ans)
+        {
+            if (ans === "success")
+            {
+                Swal.fire({
+                    title: "Success!",
+                    text: "Service Deleted Succcessfully !!!",
+                    icon: "success"
+                });
+
+                alreadyAddedServices();
+            } else if (ans === "fail")
+            {
+                Swal.fire({
+                    title: "Oops...",
+                    text: "Invalid Service Name...",
+                    icon: "error"
+                });
+            } else
+            {
+                Swal.fire(ans);
+            }
+        }
+
+        function goToSubServices(sname, sphoto)
+        {
+            window.location.href = "/adminManageSubServices?sname=" + sname + "&sphoto=" + sphoto;
+        }
+
+    </script>
+</head>
+
+<body onload="alreadyAddedServices()">
+
+    <!-- ADMIN NAV -->
+    <div th:insert="admin_nav"></div>
+
+    <!-- Body main wrapper start -->
+    <main>
+
+        <div class="breadcrumb__area breadcrumb-space overflow-hidden banner-home-bg ">
+            <div class="banner-home__middel-shape inner-top-shape"></div>
+            <div class="container">
+                <div class="banner-all-shape-wrapper">
+                    <div class="banner-home__banner-shape-1 first-shape">
+                        <img class="upDown-top" src="assets/imgs/banner-1/banner-shape-1.svg" alt="img not found">
+                    </div>
+                    <div class="banner-home__banner-shape-2 second-shape">
+                        <img class="upDown-bottom" src="assets/imgs/banner-1/banner-shape-2.svg" alt="img not found">
+                    </div>
+                    <div class="right-shape">
+                        <img class="zooming" src="assets/imgs/inner-img/inner-right-shape.svg" alt="img not found">
+                    </div>
+                </div>
+                <div class="row align-items-center justify-content-between">
+                    <div class="col-12">
+                        <div class="breadcrumb__content text-center">
+                            <div class="breadcrumb__title-wrapper mb-15 mb-sm-10 mb-xs-5">
+                                <h1 class="breadcrumb__title color-white wow fadeIn animated" data-wow-delay=".1s">Admin Manage Services</h1>
+                            </div>
+                            <div class="breadcrumb__menu wow fadeIn animated" data-wow-delay=".5s">
+                                <nav>
+                                    <ul>
+                                        <li><span><a href="/adminHome" target="_blank">Admin Home</a></span></li>
+                                        <li class="active"><span>Admin Manage Services</span></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--contact-us-start-->
+        <section class="contact-us__area section-space overflow-hidden">
+            <div class="container">
+                <div class="row align-items-center" style="height:800px">
+                    <div class="col-xl-5">
+                        <div class="main-team-details__first-img">
+                            <img class="img-fluid" src="assets/imgs/admin-home/manage-services.jpg" alt="img not found">
+                        </div>
+                    </div>
+                    <div class="col-xl-7">
+                        <div class="contact-us__form-wrapper mb-30 mb-xs-25">
+                            <h3 class="section__title mb-10 wow fadeInLeft animated" data-wow-delay=".3s">Add New Service</h3>
+                            <!--<p class="mb-40 mb-sm-25 mb-xs-20 wow fadeInLeft animated" data-wow-delay=".5s">You can also reach out to us by phone or email are many variations</p>-->
+
+
+                            <form class="contact-us__form" id="contact-us__form">
+                                <div class="row wow fadeInLeft animated" data-wow-delay=".9s">
+                                    <div class="col-sm-6">
+                                        <div class="contact-us__input">
+                                            <input id="sname" name="sname" type="text" placeholder="Service Name">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="contact-us__input">
+                                            <input type="file" id="ph" name="ph" accept="image/*" />
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="contact-us__textarea ">
+                                            <textarea id="sdesc" name="sdesc" cols="30" rows="10" placeholder="Service Desc"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <input type="button" value="Add Service" class="rr-btn mt-30" onclick="addService()"/>
+                                    </div>
+                                    <div class="col-12 mt-4" id="d1">
+                                        ANSWER WILL BE SHOWN HERE
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row align-items-center">
+                    <div class="col-xl-12 text-center mb-5">
+                        <h1>Already Added Services</h1>
+                    </div>
+                    <div class="col-xl-12" id="d2">
+                        TABLE WILL BE SHOWN HERE
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--contact-us-end-->
+
+    </main>
+
+
+
+    <!-- FOOTER FRAGMENT -->
+    <div th:insert="footer"></div>
+</body>
+
+
+<!-- Mirrored from rrdevs.net/demos/html/printfix/sing-in.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 24 Apr 2024 07:05:57 GMT -->
+</html>

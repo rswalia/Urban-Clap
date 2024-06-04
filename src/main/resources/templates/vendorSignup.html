@@ -1,0 +1,375 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+    <!-- HEADER FRAGMENT -->
+    <head>
+    <div th:insert="header"></div>
+    <title>Vendor Signup</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+
+        function renderCity()
+        {
+            var url = "/renderCity";
+
+            fetch(url)
+                    .then(response => response.text())
+                    .then(ans => showRenderCity(ans));
+        }
+
+        function showRenderCity(ans)
+        {
+            console.log(ans);
+
+            var mainobj = JSON.parse(ans);
+            console.log(mainobj);
+
+            var arr = mainobj.ans;
+
+            var s = "";
+
+            s += "<input class=\"form-control\" list=\"city\" id=\"vcity\" placeholder=\"Select City\">";
+            s += "<datalist id=\"city\">";
+
+            for (var i = 0; i < arr.length; i++)
+            {
+                var obj = arr[i];
+                s += "<option value=\"" + obj.cname + "\">";
+//                alert(obj.cname);
+            }
+
+            s += "</datalist>";
+
+            document.getElementById("renderCity").innerHTML = s;
+
+            renderService();    // Call another function
+        }
+
+        function renderService()
+        {
+            var url = "/renderService";
+
+            fetch(url)
+                    .then(response => response.text())
+                    .then(ans => showRenderService(ans));
+        }
+
+        function showRenderService(ans)
+        {
+            console.log(ans);
+
+            var mainobj = JSON.parse(ans);
+            console.log(mainobj);
+
+            var arr = mainobj.ans;
+
+            var s = "";
+
+            s += "<input id=\"sname\" onchange=\"renderSubServices()\" class=\"form-control\" list=\"service\" placeholder=\"Select Service\">";
+            s += "<datalist id=\"service\" >";
+            for (var i = 0; i < arr.length; i++)
+            {
+                var obj = arr[i];
+                s += "<option value=\"" + obj.sname + "\"  >";
+            }
+            s += "</datalist>";
+
+            document.getElementById("renderService").innerHTML = s;
+        }
+
+        function renderSubServices()
+        {
+            var sname = document.getElementById("sname").value;
+            alert(sname);
+
+            var url = "/renderSubServices?sname="+sname;
+
+            fetch(url)
+                    .then(response => response.text())
+                    .then(ans => showRenderSubService(ans));
+        }
+        
+        function showRenderSubService(ans)
+        {
+//            console.log(ans);
+
+            var mainobj = JSON.parse(ans);
+//            console.log(mainobj);
+
+            var arr = mainobj.ans;
+
+            var s = "";
+
+            s += "<input class=\"form-control\" id=\"ssname\" list=\"subservice\" placeholder=\"Select Sub Service\">";
+            s += "<datalist id=\"subservice\" >";
+            for (var i = 0; i < arr.length; i++)
+            {
+                var obj = arr[i];
+                s += "<option value=\"" + obj.ssname + "\" >";
+            }
+            s += "</datalist>";
+
+            document.getElementById("renderSubService").innerHTML = s;
+        }
+        
+//        TEXT + FILE
+        function addVendor()
+        {
+            alert("Go");
+
+            // TEXT
+            var vname = document.getElementById("vname").value;
+            var vemail = document.getElementById("vemail").value;
+            var vpass = document.getElementById("vpass").value;
+            
+            // DATALIST
+            var vcity = document.getElementById("vcity").value;
+            var sname = document.getElementById("sname").value;
+            var ssname = document.getElementById("ssname").value;
+            
+            var vst = document.getElementById("vst").value;
+            var vet = document.getElementById("vet").value;
+            var vprice = document.getElementById("vprice").value;
+            var vlat = document.getElementById("vlat").value;
+            var vlong = document.getElementById("vlong").value;
+            var vcontact = document.getElementById("vcontact").value;
+            var vdesc = document.getElementById("vdesc").value;
+            
+            // FILE
+            var vph = document.getElementById("vph").files[0];    // File
+            
+            var url = "/addVendor";
+            
+            var formdata = new FormData();
+
+            formdata.append("vname", vname);
+            formdata.append("vemail", vemail);
+            formdata.append("vpass", vpass);
+            formdata.append("vcity", vcity);
+            formdata.append("sname", sname);
+            formdata.append("ssname", ssname);
+            formdata.append("vst", vst);
+            formdata.append("vet", vet);
+            formdata.append("vprice", vprice);
+            formdata.append("vlat", vlat);
+            formdata.append("vlong", vlong);
+            formdata.append("vcontact", vcontact);
+            formdata.append("vdesc", vdesc);
+            formdata.append("vph", vph);
+
+            fetch(url, {method: "POST", body: formdata})      // POST : URL Hidden
+                    .then(response => response.text())
+                    .then(ans => showAddVendor(ans));
+        }
+
+        function showAddVendor(ans)
+        {
+            if (ans === "success")
+            {
+                Swal.fire({
+                    title: "Success!",
+                    text: "Vendor Added Succcessfully !!!",
+                    icon: "success"
+                });
+
+                document.getElementById("d1").innerHTML = "Vendor Added Succcessfully !!!";
+            } else if (ans === "fail")
+            {
+                Swal.fire({
+                    title: "Oops...",
+                    text: "Duplicate Entry Not Allowed ...",
+                    icon: "error"
+                });
+            } else
+            {
+                Swal.fire(ans);
+            }
+        }
+    </script>
+</head>
+
+<body onload="renderCity()">
+
+    <!-- VENDOR NAV -->
+    <div th:insert="vendor_nav"></div>
+
+    <!-- Body main wrapper start -->
+    <main>
+
+        <div class="breadcrumb__area breadcrumb-space overflow-hidden banner-home-bg ">
+            <div class="banner-home__middel-shape inner-top-shape"></div>
+            <div class="container">
+                <div class="banner-all-shape-wrapper">
+                    <div class="banner-home__banner-shape-1 first-shape">
+                        <img class="upDown-top" src="assets/imgs/banner-1/banner-shape-1.svg" alt="img not found">
+                    </div>
+                    <div class="banner-home__banner-shape-2 second-shape">
+                        <img class="upDown-bottom" src="assets/imgs/banner-1/banner-shape-2.svg" alt="img not found">
+                    </div>
+                    <div class="right-shape">
+                        <img class="zooming" src="assets/imgs/inner-img/inner-right-shape.svg" alt="img not found">
+                    </div>
+                </div>
+                <div class="row align-items-center justify-content-between">
+                    <div class="col-12">
+                        <div class="breadcrumb__content text-center">
+                            <div class="breadcrumb__title-wrapper mb-15 mb-sm-10 mb-xs-5">
+                                <h1 class="breadcrumb__title color-white wow fadeIn animated" data-wow-delay=".1s">Vendor Sign Up</h1>
+                            </div>
+                            <div class="breadcrumb__menu wow fadeIn animated" data-wow-delay=".5s">
+                                <nav>
+                                    <ul>
+                                        <li><span><a href="/">Home</a></span></li>
+                                        <li class="active"><span>Vendor Sign Up</span></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- register area start  -->
+        <div class="register-area pt-120 pb-120">
+            <div class="container container-small">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="all-content">
+                            <div class="title-wrapper text-center mb-40">
+                                <h3 class="title">Welcome back!</h3>
+                                <h6 class="subtitle">Enter your Credentials to access your account</h6>
+                            </div>
+
+                            <div class="signup-form-wrapper">
+                                <div class="item-thumb">
+                                    <form class="contact-us__form" id="contact-us__form" method="POST">
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="signup-item">
+                                                    <input id="vname" type="text" placeholder="Enter your name">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="signup-item">
+                                                    <input id="vemail" type="email" placeholder="Enter email address">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="signup-item">
+                                                    <input id="vpass" type="password" placeholder="Create password">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="signup-item" id="renderCity">
+                                                    RENDER CITY
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="signup-item" id="renderService">
+                                                    RENDER SERVICES
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="signup-item" id="renderSubService">
+                                                    RENDER SUB SERVICES
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="signup-item">
+                                                    <input id="vst" type="number" placeholder="Enter Start Time">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="signup-item">
+                                                    <input id="vet" type="number" placeholder="Enter End Time">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="signup-item">
+                                                    <input id="vprice" type="number" placeholder="Enter Price Per Hour">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="signup-item">
+                                                    <input id="vlat" type="number" placeholder="Enter Latitude">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="signup-item">
+                                                    <input id="vlong" type="number" placeholder="Enter Longitude">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="signup-item">
+                                                    <input id="vcontact" type="text" placeholder="Enter Contact">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="contact-us__textarea ">
+                                                    <textarea id="vdesc" cols="30" rows="10" placeholder="Description"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="signup-item">
+                                                    <input id="vph" type="file" accept="image/*"/>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="signup-action">
+                                            <div class="course-sidebar-list">
+                                                <input class="signup-checkbo" type="checkbox" id="sing-in">
+                                                <label class="sign-check" for="sing-in"><span>I Agree to the terms and privacy policy.</span></label>
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+
+                                <div class="button">
+                                    <input type="button" value="Sign Up" class="sing-buttom mb-20" onclick="addVendor()"/>
+                                </div>
+                                <div class="bottom-button">
+                                </div>
+                                <div id="d1">
+                                    ANSWER WILL BE SHOWN HERE
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- register area end  -->
+    </main>
+
+
+    <!-- FOOTER FRAGMENT -->
+    <div th:insert="footer"></div>
+
+</body>
+
+<!-- Mirrored from rrdevs.net/demos/html/printfix/sing-in.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 24 Apr 2024 07:05:57 GMT -->
+</html>

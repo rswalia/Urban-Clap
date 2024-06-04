@@ -1,0 +1,249 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+    <!-- HEADER FRAGMENT -->
+    <head>
+    <div th:insert="header"></div>
+    <title>Admin Manage Cities</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+
+//        TEXT + FILE
+        function addCity()
+        {
+//            alert("Go");
+
+            var cname = document.getElementById("cname").value;
+            var cdesc = document.getElementById("cdesc").value;
+            var ph = document.getElementById("ph").files[0];    // File
+
+            var url = "/addCity";
+
+            var formdata = new FormData();
+
+            formdata.append("cname", cname);
+            formdata.append("cdesc", cdesc);
+            formdata.append("ph", ph);
+
+            fetch(url, {method: "POST", body: formdata})      // POST : URL Hidden
+                    .then(response => response.text())
+                    .then(ans => showAddCity(ans));
+        }
+
+        function showAddCity(ans)
+        {
+            if (ans === "success")
+            {
+                Swal.fire({
+                    title: "Success!",
+                    text: "City Added Succcessfully !!!",
+                    icon: "success"
+                });
+
+                document.getElementById("d1").innerHTML = "City Added Succcessfully !!!";
+                alreadyAddedCities();
+            } else if (ans === "fail")
+            {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Duplicate Entry Not Allowed ..."
+                });
+            } else
+            {
+                Swal.fire(ans);
+            }
+        }
+
+//        Table
+        function alreadyAddedCities()
+        {
+            var url = "/alreadyAddedCities";
+
+            fetch(url)
+                    .then(response => response.text())
+                    .then(ans => showAlreadyAddedCities(ans));
+        }
+
+        function showAlreadyAddedCities(ans)
+        {
+            console.log(ans);
+
+            var mainobj = JSON.parse(ans);
+            console.log(mainobj);
+
+            var arr = mainobj.ans;
+
+            var s = "";
+
+            s += "<table class=\"table table-striped\">";
+            s += "<tr>";
+            s += "<th>City Name</th>";
+            s += "<th>City Desc</th>";
+            s += "<th>Photo</th>";
+            s += "<th>Remove</th>";
+            s += "</tr>";
+
+            for (var i = 0; i < arr.length; i++)
+            {
+                var obj = arr[i];
+                s += "<tr>";
+                s += "<td>" + obj.cname + "</td>";
+                s += "<td>" + obj.cdesc + "</td>";
+                s += "<td><img src=\"" + obj.cphoto + "\" class=\"img-thumbnail\" style=\"width:200px; height:100px\" /></td>";
+                s += "<td><input type=\"button\" value=\"Delete City\" class=\"btn btn-outline-danger btn-lg\" onclick=\"deleteCity('" + obj.cname + "')\" /></td>";
+                s += "</tr>";
+            }
+            s += "</table>";
+
+            document.getElementById("d2").innerHTML = s;
+        }
+
+        function deleteCity(cname)
+        {
+//            alert(cname);
+
+            var url = "/deleteCity?cname=" + cname;
+
+            fetch(url)
+                    .then(response => response.text())
+                    .then(ans => showDeleteCity(ans));
+        }
+
+        function showDeleteCity(ans)
+        {
+            if (ans === "success")
+            {
+                Swal.fire({
+                    title: "Success!",
+                    text: "City Deleted Successfully !!!",
+                    icon: "success"
+                });
+
+                alreadyAddedCities();
+            } else if (ans === "fail")
+            {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Invalid City Name..."
+                });
+            } else
+            {
+                Swal.fire(ans);
+            }
+        }
+
+    </script>
+</head>
+
+<body onload="alreadyAddedCities()">
+
+    <!-- ADMIN NAV -->
+    <div th:insert="admin_nav"></div>
+
+    <!-- Body main wrapper start -->
+    <main>
+
+        <div class="breadcrumb__area breadcrumb-space overflow-hidden banner-home-bg ">
+            <div class="banner-home__middel-shape inner-top-shape"></div>
+            <div class="container">
+                <div class="banner-all-shape-wrapper">
+                    <div class="banner-home__banner-shape-1 first-shape">
+                        <img class="upDown-top" src="assets/imgs/banner-1/banner-shape-1.svg" alt="img not found">
+                    </div>
+                    <div class="banner-home__banner-shape-2 second-shape">
+                        <img class="upDown-bottom" src="assets/imgs/banner-1/banner-shape-2.svg" alt="img not found">
+                    </div>
+                    <div class="right-shape">
+                        <img class="zooming" src="assets/imgs/inner-img/inner-right-shape.svg" alt="img not found">
+                    </div>
+                </div>
+                <div class="row align-items-center justify-content-between">
+                    <div class="col-12">
+                        <div class="breadcrumb__content text-center">
+                            <div class="breadcrumb__title-wrapper mb-15 mb-sm-10 mb-xs-5">
+                                <h1 class="breadcrumb__title color-white wow fadeIn animated" data-wow-delay=".1s">Admin Manage Cities</h1>
+                            </div>
+                            <div class="breadcrumb__menu wow fadeIn animated" data-wow-delay=".5s">
+                                <nav>
+                                    <ul>
+                                        <li><span><a href="/adminHome" target="_blank">Admin Home</a></span></li>
+                                        <li class="active"><span>Admin Manage Cities</span></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--contact-us-start-->
+        <section class="contact-us__area section-space overflow-hidden">
+            <div class="container">
+                <div class="row align-items-center" style="height:800px">
+                    <div class="col-xl-5">
+                        <div class="main-team-details__first-img">
+                            <img src="assets/imgs/admin-home/manage-cities.jpg" alt="img not found" class="img-thumbnail">
+                        </div>
+                    </div>
+
+                    <div class="col-xl-7">
+                        <div class="contact-us__form-wrapper mb-30 mb-xs-25">
+                            <h3 class="section__title mb-10 wow fadeInLeft animated" data-wow-delay=".3s">Add New City</h3>
+                            <!--<p class="mb-40 mb-sm-25 mb-xs-20 wow fadeInLeft animated" data-wow-delay=".5s">You can also reach out to us by phone or email are many variations</p>-->
+
+
+                            <form class="contact-us__form" id="contact-us__form">
+                                <div class="row wow fadeInLeft animated" data-wow-delay=".9s">
+                                    <div class="col-sm-6">
+                                        <div class="contact-us__input">
+                                            <input id="cname" name="cname" type="text" placeholder="City Name">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="contact-us__input">
+                                            <input type="file" id="ph" name="ph" accept="image/*" />
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="contact-us__textarea ">
+                                            <textarea id="cdesc" name="cdesc" cols="30" rows="10" placeholder="City Desc"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <input type="button" value="Add City" class="rr-btn mt-30" onclick="addCity()"/>
+                                    </div>
+                                    <div class="col-12 mt-4" id="d1">
+                                        ANSWER WILL BE SHOWN HERE
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row align-items-center">
+                    <div class="col-xl-12 text-center mb-5">
+                        <h1>Already Added Cities</h1>
+                    </div>
+                    <div class="col-xl-12" id="d2">
+                        TABLE WILL BE SHOWN HERE
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--contact-us-end-->
+
+    </main>
+
+
+
+    <!-- FOOTER FRAGMENT -->
+    <div th:insert="footer"></div>
+</body>
+
+
+<!-- Mirrored from rrdevs.net/demos/html/printfix/sing-in.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 24 Apr 2024 07:05:57 GMT -->
+</html>

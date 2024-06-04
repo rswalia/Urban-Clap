@@ -1,0 +1,132 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+    <!-- HEADER FRAGMENT -->
+    <head>
+    <div th:insert="header"></div>
+    <title>User Login</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function checkUserLogin()
+        {
+            //            alert("Go");
+
+            var e = document.getElementById("email").value;
+            var p = document.getElementById("pass").value;
+
+            var url = "/checkUserLogin?e=" + e + "&p=" + p;
+
+            fetch(url)
+                    .then(response => response.text())
+                    .then(ans => showUserLogin(ans));
+        }
+
+        function showUserLogin(ans)
+        {
+            if (ans === "success")
+            {
+                Swal.fire({
+                    title: "Success!",
+                    text: "Login Successfull !!!",
+                    icon: "success"
+                });
+
+                setTimeout("window.location.href='/';", 1000);
+            } else if (ans === "fail")
+            {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Something went wrong!"
+                });
+            } else
+            {
+                Swal.fire(ans);
+            }
+        }
+    </script>
+</head>
+
+<body>
+
+    <!-- VENDOR NAV -->
+    <div th:insert="user_nav"></div>
+
+
+    <!-- Body main wrapper start -->
+    <main>
+
+        <div class="breadcrumb__area breadcrumb-space overflow-hidden banner-home-bg ">
+            <div class="banner-home__middel-shape inner-top-shape"></div>
+            <div class="container">
+                <div class="banner-all-shape-wrapper">
+                    <div class="banner-home__banner-shape-1 first-shape">
+                        <img class="upDown-top" src="assets/imgs/banner-1/banner-shape-1.svg" alt="img not found">
+                    </div>
+                    <div class="banner-home__banner-shape-2 second-shape">
+                        <img class="upDown-bottom" src="assets/imgs/banner-1/banner-shape-2.svg" alt="img not found">
+                    </div>
+                    <div class="right-shape">
+                        <img class="zooming" src="assets/imgs/inner-img/inner-right-shape.svg" alt="img not found">
+                    </div>
+                </div>
+                <div class="row align-items-center justify-content-between">
+                    <div class="col-12">
+                        <div class="breadcrumb__content text-center">
+                            <div class="breadcrumb__title-wrapper mb-15 mb-sm-10 mb-xs-5">
+                                <h1 class="breadcrumb__title color-white wow fadeIn animated" data-wow-delay=".1s">User Sign In</h1>
+                            </div>
+                            <div class="breadcrumb__menu wow fadeIn animated" data-wow-delay=".5s">
+                                <nav>
+                                    <ul>
+                                        <li><span><a href="/">Home</a></span></li>
+                                        <li class="active"><span>User Sign In</span></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- register area start  -->
+        <div class="register-area pt-120 pb-120">
+            <div class="container container-small">
+                <div class="row">
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="all-content">
+                            <div class="title-wrapper text-center mb-40">
+                                <h3 class="title">Welcome User !</h3>
+                                <h6 class="subtitle">Enter your Credentials to access your account</h6>
+                            </div>
+                            <div class="signup-form-wrapper">
+                                <div class="item-thumb">
+                                    <div class="signup-item">
+                                        <h6>Email Address</h6>
+                                        <input type="email" id="email" placeholder="Enter your email">
+                                    </div>
+                                    <div class="signup-item">
+                                        <h6>Your Password</h6>
+                                        <input type="password" id="pass" placeholder="Enter your password">
+                                    </div>
+                                </div>
+                                <input type="button" value="Sign In" class="sing-buttom mb-20" onclick="checkUserLogin()"/>
+                                <div class="bottom-button">
+                                </div>
+                            </div>
+                            <!-- register area end  -->
+                            </main>
+
+
+
+                            <!-- FOOTER FRAGMENT -->
+                            <div th:insert="footer"></div>
+
+                            </body>
+
+                            <!-- Mirrored from rrdevs.net/demos/html/printfix/sing-in.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 24 Apr 2024 07:05:57 GMT -->
+                            </html>

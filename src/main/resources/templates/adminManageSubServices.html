@@ -1,0 +1,254 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+    <!-- HEADER FRAGMENT -->
+    <head>
+    <div th:insert="header"></div>
+    <title>Admin Manage Sub Services</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+
+//        TEXT + FILE
+        function addSubService()
+        {
+//            alert("Go");
+
+            var ssname = document.getElementById("ssname").value;
+            var ssdesc = document.getElementById("ssdesc").value;
+            var ph = document.getElementById("ph").files[0];    // File
+            var sname = document.getElementById("sname").innerHTML;
+            
+            var url = "/addSubService";
+            
+            var formdata = new FormData();
+
+            formdata.append("ssname", ssname);
+            formdata.append("ssdesc", ssdesc);
+            formdata.append("ph", ph);
+            formdata.append("sname", sname);
+
+            fetch(url, {method: "POST", body: formdata})      // POST : URL Hidden
+                    .then(response => response.text())
+                    .then(ans => showAddSubService(ans));
+        }
+
+        function showAddSubService(ans)
+        {
+            if (ans === "success")
+            {
+                Swal.fire({
+                    title: "Success!",
+                    text: "Sub Service Added Succcessfully !!!",
+                    icon: "success"
+                });
+
+                document.getElementById("d1").innerHTML = "Sub Service Added Succcessfully !!!";
+                alreadyAddedSubServices();
+            } else if (ans === "fail")
+            {
+                Swal.fire({
+                    title: "Oops...",
+                    text: "Duplicate Entry Not Allowed ...",
+                    icon: "error"
+                });
+            } else
+            {
+                Swal.fire(ans);
+            }
+        }
+
+//        Table
+        function alreadyAddedSubServices()
+        {
+            var sname = document.getElementById("sname").innerHTML;
+            
+//            alert(sname);
+            
+            var url = "/alreadyAddedSubServices?sname="+sname;
+            
+            fetch(url)
+                    .then(response => response.text())
+                    .then(ans => showAlreadyAddedSubServices(ans));
+        }
+        
+        function showAlreadyAddedSubServices(ans)
+        {
+            console.log(ans);
+            
+            var mainobj = JSON.parse(ans);
+            console.log(mainobj);
+            
+            var arr = mainobj.ans;
+            
+            var s = "";
+            
+            s += "<table class=\"table table-striped\">";
+            s += "<tr>";
+                s += "<th>Sub Service Name</th>";
+                s += "<th>Sub Service Desc</th>";
+                s += "<th>Photo</th>";
+                s += "<th>Service Name</th>";
+                s += "<th>Operation</th>"
+            s += "</tr>";
+            
+            for(var i=0; i<arr.length; i++)
+            {
+                var obj = arr[i];
+                s += "<tr>";
+                    s += "<td>"+ obj.ssname +"</td>";
+                    s += "<td>"+ obj.ssdesc +"</td>";
+                    s += "<td><img src=\""+ obj.ssphoto +"\" class=\"img-thumbnail\" style=\"width:200px; height:100px\" /></td>";
+                    s += "<td>"+ obj.sname +"</td>";
+                    s += "<td><input type=\"button\" value=\"Delete Sub Service\" class=\"btn btn-outline-danger btn-lg\" onclick=\"deleteSubService('"+ obj.ssname +"')\" /> </td>";
+                s += "</tr>";
+            }
+            s += "</table>";
+            
+            document.getElementById("d2").innerHTML = s;
+        }
+        
+        function deleteSubService(ssname)
+        {
+//            alert(sname);
+            
+            var url = "/deleteSubService?ssname="+ssname;
+            
+            fetch(url)
+                    .then(response => response.text())
+                    .then(ans => showDeleteSubService(ans));
+        }
+        
+        function showDeleteSubService(ans)
+        {
+            if (ans === "success")
+            {
+                Swal.fire({
+                    title: "Success!",
+                    text: "Sub Service Deleted Succcessfully !!!",
+                    icon: "success"
+                });
+
+                alreadyAddedSubServices();
+            } else if (ans === "fail")
+            {
+                Swal.fire({
+                    title: "Oops...",
+                    text: "Invalid Sub Service Name...",
+                    icon: "error"
+                });
+            } else
+            {
+                Swal.fire(ans);
+            }
+        }
+
+    </script>
+</head>
+
+<body onload="alreadyAddedSubServices()">
+
+    <!-- ADMIN NAV -->
+    <div th:insert="admin_nav"></div>
+
+    <!-- Body main wrapper start -->
+    <main>
+
+        <div class="breadcrumb__area breadcrumb-space overflow-hidden banner-home-bg ">
+            <div class="banner-home__middel-shape inner-top-shape"></div>
+            <div class="container">
+                <div class="banner-all-shape-wrapper">
+                    <div class="banner-home__banner-shape-1 first-shape">
+                        <img class="upDown-top" src="assets/imgs/banner-1/banner-shape-1.svg" alt="img not found">
+                    </div>
+                    <div class="banner-home__banner-shape-2 second-shape">
+                        <img class="upDown-bottom" src="assets/imgs/banner-1/banner-shape-2.svg" alt="img not found">
+                    </div>
+                    <div class="right-shape">
+                        <img class="zooming" src="assets/imgs/inner-img/inner-right-shape.svg" alt="img not found">
+                    </div>
+                </div>
+                <div class="row align-items-center justify-content-between">
+                    <div class="col-12">
+                        <div class="breadcrumb__content text-center">
+                            <div class="breadcrumb__title-wrapper mb-15 mb-sm-10 mb-xs-5">
+                                <h1 class="breadcrumb__title color-white wow fadeIn animated" data-wow-delay=".1s">Admin Manage Sub Services</h1>
+                            </div>
+                            <div class="breadcrumb__menu wow fadeIn animated" data-wow-delay=".5s">
+                                <nav>
+                                    <ul>
+                                        <li><span><a href="/adminManageServices" target="_blank">Admin Manage Services</a></span></li>
+                                        <li class="active"><span>Admin Manage Sub Services</span></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--contact-us-start-->
+        <section class="contact-us__area section-space overflow-hidden">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-xl-4">
+                        <img th:src="${sphoto}" alt="img not found">
+                    </div>
+                    <div class="col-xl-8">
+                        <div class="contact-us__form-wrapper mb-30 mb-xs-25">
+                            <h3 class="section__title mb-10 wow fadeInLeft animated" data-wow-delay=".3s">Add New Sub Service For</h3>
+                            <h3 class="section__title mb-10 wow fadeInLeft animated" data-wow-delay=".3s" id="sname" th:text="${sname}"></h3>
+                            <!--<p class="mb-40 mb-sm-25 mb-xs-20 wow fadeInLeft animated" data-wow-delay=".5s">You can also reach out to us by phone or email are many variations</p>-->
+
+
+                            <form class="contact-us__form" id="contact-us__form">
+                                <div class="row wow fadeInLeft animated" data-wow-delay=".9s">
+                                    <div class="col-sm-6">
+                                        <div class="contact-us__input">
+                                            <input id="ssname" name="ssname" type="text" placeholder="Sub Service Name">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="contact-us__input">
+                                            <input type="file" id="ph" name="ph" accept="image/*" />
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="contact-us__textarea ">
+                                            <textarea id="ssdesc" name="ssdesc" cols="30" rows="10" placeholder="Sub Service Desc"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <input type="button" value="Add Sub Service" class="rr-btn mt-30" onclick="addSubService()"/>
+                                    </div>
+                                    <div class="col-12 mt-4" id="d1">
+                                        ANSWER WILL BE SHOWN HERE
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row align-items-center">
+                    <div class="col-xl-12 text-center mb-5">
+                        <h1>Already Added Sub Services</h1>
+                    </div>
+                    <div class="col-xl-12" id="d2">
+                        TABLE WILL BE SHOWN HERE
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--contact-us-end-->
+
+    </main>
+
+    <!-- FOOTER FRAGMENT -->
+    <div th:insert="footer"></div>
+    
+</body>
+
+
+<!-- Mirrored from rrdevs.net/demos/html/printfix/sing-in.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 24 Apr 2024 07:05:57 GMT -->
+</html>

@@ -1,0 +1,649 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+    <head>
+    <div th:insert="header"></div>
+    <title>User Vendor Details</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Catamaran:wght@100;200;300;400;500;600;700;800;900&amp;family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+
+        var vemail = "";
+
+        function renderVendorDetails()
+        {
+//            alert("Go");
+
+            vemail = document.getElementById("vemail").innerText;
+//            alert(vemail);
+
+            var url = "/renderVendorDetails?vemail=" + vemail;
+
+            fetch(url)
+                    .then(response => response.text())
+                    .then(ans => showRenderVendorDetails(ans));
+        }
+        function showRenderVendorDetails(ans)
+        {
+//            alert(vemail);
+            console.log(ans);
+
+            var mainobj = JSON.parse(ans);
+            console.log(mainobj);
+
+            var obj = mainobj.ans;
+
+//            console.log(obj[0].vcity);
+            
+            var photo = obj[0].vphoto;
+            document.getElementById("reviewPhoto").src = photo;
+            
+            var s = ``;
+
+            s += `<div class="row">
+                    <div class="col-xl-5 col-lg-6 col-md-6 col-sm-6">
+                        <div class="main-team-details__first-img">
+                            
+        
+        <div class="rr-fea-product__item rr-pro-img mb-30">
+
+                        <div class="rr-fea-product__thumb fix p-relative">
+                            <img  src="` + obj[0].vphoto + `"  alt="img not found">
+                            <div class="rr-fea-product__thumb-text">
+                                <span>-70%</span>
+                            </div>
+
+                            <div class="rr-fea-product__icon-box icon-box-3 rr-product-action">
+                                <div class="product-action-btn mb-6">
+                                    <a href="#" class="icon-btn woosq-btn woosq-btn-896 " data-id="896" data-effect="mfp-3d-unfold">
+                                        <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M17.612 2.41452C17.1722 1.96607 16.65 1.61034 16.0752 1.36763C15.5005 1.12492 14.8844 1 14.2623 1C13.6401 1 13.0241 1.12492 12.4493 1.36763C11.8746 1.61034 11.3524 1.96607 10.9126 2.41452L9.99977 3.34476L9.08699 2.41452C8.19858 1.50912 6.99364 1.00047 5.73725 1.00047C4.48085 1.00047 3.27591 1.50912 2.38751 2.41452C1.4991 3.31992 1 4.5479 1 5.82833C1 7.10875 1.4991 8.33674 2.38751 9.24214L3.30029 10.1724L9.99977 17L16.6992 10.1724L17.612 9.24214C18.0521 8.79391 18.4011 8.26171 18.6393 7.67596C18.8774 7.0902 19 6.46237 19 5.82833C19 5.19428 18.8774 4.56645 18.6393 3.9807C18.4011 3.39494 18.0521 2.86275 17.612 2.41452Z" stroke="#001D08" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    </a>
+                                </div>
+                                <div class="product-action-btn mb-6">
+                                    <a href="#" class="icon-btn woosq-btn woosq-btn-896 " data-id="896" data-effect="mfp-3d-unfold">
+                                        <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M11.8887 1L14.9997 3.90909L11.8887 6.81818" stroke="#001D08" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M1 8.27282V6.81827C1 6.04673 1.32777 5.30679 1.91121 4.76123C2.49464 4.21567 3.28595 3.90918 4.11106 3.90918H14.9998" stroke="#001D08" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M4.11106 16.9998L1 14.0907L4.11106 11.1816" stroke="#001D08" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M14.9998 9.72705V11.1816C14.9998 11.9531 14.672 12.6931 14.0886 13.2386C13.5051 13.7842 12.7138 14.0907 11.8887 14.0907H1" stroke="#001D08" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    </a>
+                                </div>
+                                <div class="product-action-btn">
+                                    <a href="#" class="icon-btn woosq-btn woosq-btn-896 " data-id="896" data-effect="mfp-3d-unfold">
+                                        <svg width="24" height="18" viewBox="0 0 24 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M1 9C1 9 5 1 12 1C19 1 23 9 23 9C23 9 19 17 12 17C5 17 1 9 1 9Z" stroke="#001D08" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M12 12C13.6569 12 15 10.6569 15 9C15 7.34315 13.6569 6 12 6C10.3431 6 9 7.34315 9 9C9 10.6569 10.3431 12 12 12Z" stroke="#001D08" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="product-action-btn-5">
+                                <h5>Hot</h5>
+                            </div>
+                        </div>
+
+                        <div class="rr-fea-product__content">
+                            <div class="rr-fea-product__star">
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <span><i class="fa-solid fa-star"></i></span>
+                            </div>
+        
+                            <h4 class="rr-fea-product__title-sm"><a href="shop.html">` + obj[0].vname + `</a></h4>
+                            <div class="rr-product-content-price">
+                                <span class="product-item-3-price">
+                                <span class="price">
+                                    <span class="woocs_price_code d-flex gap-6"  >
+                                        <del aria-hidden="true">
+                                            <span class="woocommerce-price-amount amount">
+                                                &#8377;` + obj[0].vprice + `
+                                            </span>
+                                </del>
+                                <span class="woocommerce-price-amount amount body-color">
+                                            &#8377;` + obj[0].vprice + `
+                                        </span>
+                                </span>
+                                </span>
+                                </span>
+                            </div>
+                            <div class="rr-fea-product__link-box">
+                                <a href="/userVendorBookSlot?vemail=` + vemail + `" target="_blank" class="cart-button icon-btn button rr-btn-cart "  >
+                                    <span></span>Book A Slot
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+        
+        
+                        </div>
+                    </div>
+                    <div class="col-xl-7 col-lg-6 col-md-6 col-sm-6">
+                        <div class="main-team-details__content">
+                            <div class="main-team-details__content-title mb-30">
+                                <h3>` + obj[0].vname + `</h3>
+                            </div>
+                            <div class="main-team-details__content-thumb">
+                                <h4>My Biography</h4>
+                                <p>` + obj[0].vdesc + `</p>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6>Phone</h6>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p>` + obj[0].vcontact + `</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6>Email</h6>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p>` + obj[0].vemail + `</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6>City</h6>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p>` + obj[0].vcity + `</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6>Service</h6>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p>` + obj[0].vservice + `</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6>Sub Service</h6>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p>` + obj[0].vsservice + `</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6>Start Time</h6>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p>` + obj[0].vst + `</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6>End Time</h6>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p>` + obj[0].vet + `</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6>Price Per Hour</h6>
+                                    </div>
+                                    <div class="col-sm-9">
+                                       <p>&#8377;` + obj[0].vprice + `</p>
+                                    </div>
+                                </div>
+
+                                <div class="main-team-details__content-thumb-btn d-flex mt-5">
+                                    <a href="https://www.facebook.com/"><i class="fa-brands fa-facebook-f"></i></a>
+                                    <a href="https://twitter.com/home"><i class="fa-brands fa-twitter"></i></a>
+                                    <a href="https://pinterest.com/"><i class="fa-brands fa-pinterest-p"></i></a>
+                                    <a href="https://vimeo.com/"><i class="fa-brands fa-vimeo-v"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+
+            document.getElementById("vendorDetails").innerHTML = s;
+            var latitude = obj[0].vlat;
+            var longitute = obj[0].vlong;
+
+//            alert(latitude);
+//            alert(longitute);
+            document.getElementById("gmap_canvas").src = "https://maps.google.com/maps?q=" + latitude + "," + longitute + "&ie=UTF8&iwloc=&output=embed";
+            
+            averageRating();
+        }
+        
+        function averageRating() {
+            var vemail = document.getElementById("vemail").innerText;
+                //1. Make object of XMLHttpRequest
+                var xhttp = new XMLHttpRequest();
+
+                //4. Receive XMLHttpResponse from server & use ans
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var res = this.responseText;
+                        res = res.trim();
+                        var mainobj = JSON.parse(res);
+                        var arr = mainobj["ans"];
+
+                        var ren = "";
+
+                        var st = arr[0];
+                        var rating2 = st.r1;
+                        var getdecimal = rating2.toString().split(".")[1];
+                        if(parseInt(getdecimal) == 0){
+                        ren += "<div class=\"col-sm-12\" style=\"text-align: center\" >";
+                        ren += "<div class=\"card-body\">";
+                        for (var j = 0; j < st.r1; j++) {
+                            ren += "<img class=\"img-thumbnail\" style=\"border: 2px solid black; border-radius: 50%;width: 50px; height: 50px\" src=\"rating/filled_star.png\" >";
+                        }
+                        for (var j = st.r1; j < 5; j++) {
+                            ren += "<img class=\"img-thumbnail\" style=\"border: 2px solid black; border-radius: 50%;width: 50px; height: 50px\" src=\"rating/empty_star.png\" >";
+                        }
+                        ren += "</div>";
+                        ren += "</div>";
+                    }else{
+                        ren += "<div class= \"col-sm-12\" style=\"text-align: center\" >";
+                        ren += "<div class=\"card-body\">";
+                        for (var j = 0; j < st.r1-1; j++) {
+                            ren += "<img class=\"img-thumbnail\" style=\"border: 2px solid black; border-radius: 50%;width: 50px; height: 50px\" src=\"rating/filled_star.png\" >";
+                        }
+                        ren += "<img class=\"img-thumbnail\" style=\"border: 2px solid black; border-radius: 50%;width: 50px; height: 50px\" src=\"rating/download.jpg\" >";
+                        for (var j = st.r1; j < 4; j++) {
+                            ren += "<img class=\"img-thumbnail\" style=\"border: 2px solid black; border-radius: 50%;width: 50px; height: 50px\" src=\"rating/empty_star.png\" >";
+                        }
+                        ren += "</div>";
+                        ren += "</div>";
+                    }
+
+                        document.getElementById("averagerating").innerHTML = ren;
+                    }
+                };
+                //2. Prepare request (Define target --> servlet)
+                xhttp.open("GET", "./userVendorAverageRating?vemail=" + vemail, true);
+
+                //3. Send Request
+                xhttp.send();
+            }
+        
+    </script>
+</head>
+<body onload="renderVendorDetails()">
+
+    <!-- USER NAV -->
+    <div th:insert="user_nav"></div>
+
+
+    <!-- Body main wrapper start -->
+    <main>
+
+        <div class="breadcrumb__area breadcrumb-space overflow-hidden banner-home-bg ">
+            <div class="banner-home__middel-shape inner-top-shape"></div>
+            <div class="container">
+                <div class="banner-all-shape-wrapper">
+                    <div class="banner-home__banner-shape-1 first-shape">
+                        <img class="upDown-top" src="assets/imgs/banner-1/banner-shape-1.svg" alt="img not found">
+                    </div>
+                    <div class="banner-home__banner-shape-2 second-shape">
+                        <img class="upDown-bottom" src="assets/imgs/banner-1/banner-shape-2.svg" alt="img not found">
+                    </div>
+                    <div class="right-shape">
+                        <img class="zooming" src="assets/imgs/inner-img/inner-right-shape.svg" alt="img not found">
+                    </div>
+                </div>
+                <div class="row align-items-center justify-content-between">
+                    <div class="col-12">
+                        <div class="breadcrumb__content text-center">
+                            <div class="breadcrumb__title-wrapper mb-15 mb-sm-10 mb-xs-5">
+                                <h1 class="breadcrumb__title color-white wow fadeIn animated" data-wow-delay=".1s">Vendor Details</h1>
+                            </div>
+                            <div class="breadcrumb__menu wow fadeIn animated" data-wow-delay=".5s">
+                                <nav>
+                                    <ul>
+                                        <li><span><a href="/userShowVendors">User Show Vendors</a></span></li>
+                                        <li class="active"><span>Vendor Details</span></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="vemail" th:text="${vemail}" style="display:none"></div>
+
+        <section class="main-team-details__area section-space">
+            <div class="container">
+                <div id="vendorDetails">
+                    SHOW VENDOR DETAILS HERE
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- latest-testimonial area start -->
+        <!--<section class="project-area overflow-hidden latest-project-bg">-->
+        <section class="testimonial-3__area feedback-2 position-relative overflow-hidden section-space">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-xl-12">
+                        <div class="project__title">
+                            <h2 class="title wow fadeInLeft animated text-center" data-wow-delay=".4s">Our Gallery</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div  class="project-row-custom">
+                    <div th:each="st : ${al}" class="col-custom p-relative">
+                        <div class="project-item p-relative">
+                            <div class="project-thumb">
+                                <img th:src="${st.photo}" src="assets/imgs/projact/projact-img1.jpg" alt="img">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- latest-testimonial area end -->
+
+        <!-- MAP -->
+        <section class="testimonial-3__area feedback-2 position-relative overflow-hidden section-space">
+            <div class="container">
+                <div class="project__title" >
+                    <h2 class="title wow fadeInLeft animated text-center" id="gymname2">Find Us on Google Maps :</h2>
+                </div>
+
+                <div class="main-contact-map-in">
+                    <div class="mapouter"><div class="gmap_canvas">
+                            <iframe width="100%" height="400px" id="gmap_canvas" src="https://maps.google.com/maps?q=31.636694035778973,74.87413616805217&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe><a href="https://2yu.co"></a><br><style>.mapouter{
+                                    position:relative;
+                                    text-align:right;
+                                    height:100%;
+                                    width:100%;
+                                    }</style><a href="https://embedgooglemap.2yu.co/"></a><style>.gmap_canvas {
+                                    overflow:hidden;
+                                    background:none!important;
+                                    height:100%;
+                                    width:100%;
+                                    }</style></div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RATING -->
+        <section class="testimonial-3__area feedback-2 position-relative overflow-hidden section-space">
+            <div class="container">
+                <div class="testimonial-3__title-wrapper text-center mb-50">
+                    <h6 class="testimonial-3__title-wrapper-subtitle">Our Reviews</h6>
+                    <h2 class="testimonial-3__title-wrapper-title">Give Us Your Reviews</h2>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <img src="" id="reviewPhoto" alt="#" class="rounded-circle" style="width:150px; height:150px">
+                        <div id="averagerating"></div>
+                    </div>
+                    <div class="col-lg-9">
+                        <div class="form-group">
+                            <textarea rows=10 cols=50 class="form-control" id="review" placeholder="Write Your Review Here"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-3"></div>
+                    <div class="col-lg-8 m-4">
+                        <table>
+                            <tr> <label class="form-group"> Give Ratings..</label>
+                            <td>
+                                <img id="rating_1" src="rating/empty_star.png" onmouseover="fill(this);" onmouseout="unfill(this);" onclick="selected(this)" style="width: 50px; height: 50px" >
+                            </td>
+                            <td>
+                                <img id="rating_2" src="rating/empty_star.png" onmouseover="fill(this)" onmouseout="unfill(this)" onclick="selected(this)" style="width: 50px; height: 50px">
+                            </td>
+                            <td>
+                                <img id="rating_3" src="rating/empty_star.png" onmouseover="fill(this)" onmouseout="unfill(this)" onclick="selected(this)" style="width: 50px; height: 50px">
+                            </td>
+                            <td>
+                                <img id="rating_4" src="rating/empty_star.png" onmouseover="fill(this)" onmouseout="unfill(this)" onclick="selected(this)" style="width: 50px; height: 50px">
+                            </td>
+                            <td>
+                                <img id="rating_5" src="rating/empty_star.png" onmouseover="fill(this)" onmouseout="unfill(this)" onclick="selected(this)" style="width: 50px; height: 50px">
+                            </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-lg-12">
+                        <button class="rr-btn w-100" type="button"  onclick="submitRating(n)">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!--testimonial-area start -->
+        <section class="testimonial-3__area feedback-2 position-relative overflow-hidden section-space">
+            <div class="container">
+                <div class="testimonial-3__shape-wrapper">
+                    <div class="testimonial-3__shape-wrapper-bg-shape">
+                        <img class="upDown" src="assets/imgs/testimonial-3/testmonial-3-bg-shape.svg" alt="img not found">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="testimonial-3__title-wrapper text-center mb-50">
+                            <h6 class="testimonial-3__title-wrapper-subtitle">Our Testimonial</h6>
+                            <h2 class="testimonial-3__title-wrapper-title">Our Client's Feedback</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="testimonial-3__wrapper feedback-2__wrapper">
+                            <div class="swiper testimonial-3__wrapper-active-2 feedback__active-2  wow fadeIn animated" data-wow-delay=".9s">
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide">
+                                        <div class="testimonial-3__wrapper-item-2 feedback__item-2">
+                                            <div class="testimonial-3__wrapper-item-2-content feedback__item-2-content d-flex mb-sm-35 mb-xs-30">
+                                                <div class="testimonial-3__wrapper-item-2-content-right-img">
+                                                    <img src="assets/imgs/testimonial-3/textimonial-3-first-slider-img.png" alt="img not found">
+                                                </div>
+
+                                                <div class="content-thumb-social">
+                                                    <div class="testimonial-3__wrapper-item-2-content-social mb-10">
+                                                        <svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M12 0L14.6942 8.2918H23.4127L16.3593 13.4164L19.0534 21.7082L12 16.5836L4.94658 21.7082L7.64074 13.4164L0.587322 8.2918H9.30583L12 0Z" fill="#FFB016"/>
+                                                        </svg>                                                    
+                                                        <svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M12 0L14.6942 8.2918H23.4127L16.3593 13.4164L19.0534 21.7082L12 16.5836L4.94658 21.7082L7.64074 13.4164L0.587322 8.2918H9.30583L12 0Z" fill="#FFB016"/>
+                                                        </svg>                                                    
+                                                        <svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M12 0L14.6942 8.2918H23.4127L16.3593 13.4164L19.0534 21.7082L12 16.5836L4.94658 21.7082L7.64074 13.4164L0.587322 8.2918H9.30583L12 0Z" fill="#FFB016"/>
+                                                        </svg>                                                    
+                                                        <svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M12 0L14.6942 8.2918H23.4127L16.3593 13.4164L19.0534 21.7082L12 16.5836L4.94658 21.7082L7.64074 13.4164L0.587322 8.2918H9.30583L12 0Z" fill="#FFB016"/>
+                                                        </svg>                                                    
+                                                        <svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M12 0L14.6942 8.2918H23.4127L16.3593 13.4164L19.0534 21.7082L12 16.5836L4.94658 21.7082L7.64074 13.4164L0.587322 8.2918H9.30583L12 0Z" fill="#FFB016"/>
+                                                        </svg>                                                    
+                                                    </div>
+                                                    <p class="testimonial-3__wrapper-item-2-content-description">Lorem Ipsum available, but the majority have suffered alteration in some form by injected humour or randomised words which don't look even slightly believable if you are going.</p>
+                                                    <div class="testimonial-3__wrapper-item-2-author feedback__item-2-author d-flex align-items-end justify-content-between">
+                                                        <div class="testimonial-3__wrapper-item-2-author feedback__item-2-info">
+                                                            <h4 class="text-capitalize">Glean Philips</h4>
+                                                            <span>Product Manager</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+
+                                    <div class="swiper-slide">
+                                        <div class="testimonial-3__wrapper-item-2 feedback__item-2">
+                                            <div class="testimonial-3__wrapper-item-2-content feedback__item-2-content d-flex mb-sm-35 mb-xs-30">
+                                                <div class="testimonial-3__wrapper-item-2-content-right-img">
+                                                    <img src="assets/imgs/testimonial-3/textimonial-3-first-slider-img-2.png" alt="img not found">
+                                                </div>
+
+                                                <div class="content-thumb-social">
+                                                    <div class="testimonial-3__wrapper-item-2-content-social mb-10">
+                                                        <svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M12 0L14.6942 8.2918H23.4127L16.3593 13.4164L19.0534 21.7082L12 16.5836L4.94658 21.7082L7.64074 13.4164L0.587322 8.2918H9.30583L12 0Z" fill="#FFB016"/>
+                                                        </svg>                                                    
+                                                        <svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M12 0L14.6942 8.2918H23.4127L16.3593 13.4164L19.0534 21.7082L12 16.5836L4.94658 21.7082L7.64074 13.4164L0.587322 8.2918H9.30583L12 0Z" fill="#FFB016"/>
+                                                        </svg>                                                    
+                                                        <svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M12 0L14.6942 8.2918H23.4127L16.3593 13.4164L19.0534 21.7082L12 16.5836L4.94658 21.7082L7.64074 13.4164L0.587322 8.2918H9.30583L12 0Z" fill="#FFB016"/>
+                                                        </svg>                                                    
+                                                        <svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M12 0L14.6942 8.2918H23.4127L16.3593 13.4164L19.0534 21.7082L12 16.5836L4.94658 21.7082L7.64074 13.4164L0.587322 8.2918H9.30583L12 0Z" fill="#FFB016"/>
+                                                        </svg>                                                    
+                                                        <svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M12 0L14.6942 8.2918H23.4127L16.3593 13.4164L19.0534 21.7082L12 16.5836L4.94658 21.7082L7.64074 13.4164L0.587322 8.2918H9.30583L12 0Z" fill="#FFB016"/>
+                                                        </svg>                                                    
+                                                    </div>
+                                                    <p class="testimonial-3__wrapper-item-2-content-description">Lorem Ipsum available, but the majority have suffered alteration in some form by injected humour or randomised words which don't look even slightly believable if you are going.</p>
+                                                    <div class="testimonial-3__wrapper-item-2-author feedback__item-2-author d-flex align-items-end justify-content-between">
+                                                        <div class="testimonial-3__wrapper-item-2-author feedback__item-2-info">
+                                                            <h4 class="text-capitalize">Evan Lwis</h4>
+                                                            <span>Product Manager</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="feedback-2__nav-pre wrapper">
+                                <!-- If we need navigation buttons -->
+                                <div class="feedback-2__navigation">
+                                    <button class="feedback-2__slider-button-prev">
+                                        <svg width="14" height="24" viewBox="0 0 14 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12 22L2 12L12 2" stroke="#001D08" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>                                        
+                                    </button>
+                                    <!-- If we need pagination -->
+                                    <button class="feedback-2__slider-button-next">
+                                        <svg width="14" height="24" viewBox="0 0 14 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M2 22L12 12L2 2" stroke="#001D08" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>                                        
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--testimonial-area end -->
+    </main>
+
+
+
+    <!-- FOOTER FRAGMENT -->
+    <div th:insert="footer"></div>
+
+    <script>
+        var n = 0;
+        function fill(obj)
+        {
+            var img = obj.src;
+            var id = obj.id;
+            var val = parseInt(id.substring(id.indexOf("_") + 1));
+            var i;
+            if (n === 0)
+            {
+                i = 1;
+            } else
+            {
+                i = n + 1;
+            }
+            for (; i <= 5; i++)
+            {
+                if (i <= val)
+                {
+                    document.getElementById("rating_" + i).src = "rating/filled_star.png";
+
+                } else
+                {
+                    document.getElementById("rating_" + i).src = "rating/empty_star.png";
+                }
+            }
+
+        }
+        function selected(obj)
+        {
+            var id = obj.id;
+            var val = parseInt(id.substring(id.indexOf("_") + 1));
+            n = val;
+        }
+        function unfill(obj)
+        {
+            var i;
+            if (n === 0)
+            {
+                i = 1;
+            } else
+            {
+                i = n + 1;
+            }
+            for (; i <= 5; i++)
+            {
+                document.getElementById("rating_" + i).src = "rating/empty_star.png";
+            }
+        }
+        function submitRating(n)
+        {
+            var rev = document.getElementById("review").value;
+            var vemail = document.getElementById("vemail").innerText;
+
+//            alert(n);
+//            alert(rev);
+//            alert(vemail);
+
+            var url = "/submitRating?rev=" + rev + "&n=" + n+"&vemail="+vemail;
+
+            fetch(url)
+                    .then(response => response.text())
+                    .then(ans => showSubmitRating(ans));
+        }
+        function showSubmitRating(ans)
+        {
+            if (ans === "success")
+            {
+                Swal.fire({
+                    title: "Success!",
+                    text: "Review Added Successfully !!!",
+                    icon: "success"
+                });
+                averageRating();
+            } else if (ans === "fail")
+            {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Something went wrong!"
+                });
+            } else
+            {
+                Swal.fire(ans);
+            }
+        }
+    </script>
+
+</body>
+
+</html>

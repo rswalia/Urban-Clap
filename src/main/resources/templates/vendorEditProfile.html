@@ -1,0 +1,227 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+    <!-- HEADER FRAGMENT -->
+    <head>
+    <div th:insert="header"></div>
+    <title>Vendor Edit Profile</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Http Session
+        function fillDetails()
+        {
+            var url = "/fillDetails";
+
+            fetch(url)
+                    .then(response => response.text())
+                    .then(ans => showFillDetails(ans));
+        }
+
+        function showFillDetails(ans)
+        {
+//            alert(ans);
+            console.log(ans);
+
+            var mainobj = JSON.parse(ans);
+            console.log(mainobj);
+
+            var arr = mainobj.ans;
+            console.log(arr[0].vemail);
+
+            document.getElementById("vemail").value = arr[0].vemail;
+            document.getElementById("vname").value = arr[0].vname;
+            document.getElementById("vdesc").value = arr[0].vdesc;
+            document.getElementById("vst").value = arr[0].vst;
+            document.getElementById("vet").value = arr[0].vet;
+            document.getElementById("vprice").value = arr[0].vprice;
+            document.getElementById("vcontact").value = arr[0].vcontact;
+        }
+
+        function editProfile()
+        {
+            var vemail = document.getElementById("vemail").value;
+            var vname = document.getElementById("vname").value;
+            var vdesc = document.getElementById("vdesc").value;
+            var vst = document.getElementById("vst").value;
+            var vet = document.getElementById("vet").value;
+            var vprice = document.getElementById("vprice").value;
+            var vcontact = document.getElementById("vcontact").value;
+
+            var url = "/editProfile";
+
+            var formdata = new FormData();
+
+            formdata.append("vemail", vemail);
+            formdata.append("vname", vname);
+            formdata.append("vdesc", vdesc);
+            formdata.append("vst", vst);
+            formdata.append("vet", vet);
+            formdata.append("vprice", vprice);
+            formdata.append("vcontact", vcontact);
+
+
+            fetch(url, {method: "POST", body: formdata})      // POST : URL Hidden
+                    .then(response => response.text())
+                    .then(ans => showEditProfile(ans));
+        }
+
+        function showEditProfile(ans)
+        {
+            if (ans === "success")
+            {
+                Swal.fire({
+                    title: "Success!",
+                    text: "Profile Edited Succcessfully !!!",
+                    icon: "success"
+                });
+
+                document.getElementById("d1").innerHTML = "Profile Edited Succesfully !!!";
+            } else if (ans === "fail")
+            {
+                Swal.fire({
+                    title: "Oops...",
+                    text: "Invalid Request ...",
+                    icon: "error"
+                });
+                document.getElementById("d1").innerHTML = ans;
+
+            } else
+            {
+                Swal.fire(ans);
+                document.getElementById("d1").innerHTML = ans;
+            }
+        }
+    </script>
+</head>
+
+<body onload="fillDetails()">
+
+    <!-- VENDOR NAV -->
+    <div th:insert="vendor_nav"></div>
+
+    <!-- Body main wrapper start -->
+    <main>
+
+        <div class="breadcrumb__area breadcrumb-space overflow-hidden banner-home-bg ">
+            <div class="banner-home__middel-shape inner-top-shape"></div>
+            <div class="container">
+                <div class="banner-all-shape-wrapper">
+                    <div class="banner-home__banner-shape-1 first-shape">
+                        <img class="upDown-top" src="assets/imgs/banner-1/banner-shape-1.svg" alt="img not found">
+                    </div>
+                    <div class="banner-home__banner-shape-2 second-shape">
+                        <img class="upDown-bottom" src="assets/imgs/banner-1/banner-shape-2.svg" alt="img not found">
+                    </div>
+                    <div class="right-shape">
+                        <img class="zooming" src="assets/imgs/inner-img/inner-right-shape.svg" alt="img not found">
+                    </div>
+                </div>
+                <div class="row align-items-center justify-content-between">
+                    <div class="col-12">
+                        <div class="breadcrumb__content text-center">
+                            <div class="breadcrumb__title-wrapper mb-15 mb-sm-10 mb-xs-5">
+                                <h1 class="breadcrumb__title color-white wow fadeIn animated" data-wow-delay=".1s">Vendor Edit Profile</h1>
+                            </div>
+                            <div class="breadcrumb__menu wow fadeIn animated" data-wow-delay=".5s">
+                                <nav>
+                                    <ul>
+                                        <li><span><a href="/vendorHome">Vendor Home</a></span></li>
+                                        <li class="active"><span>Vendor Edit Profile</span></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- register area start  -->
+        <div class="register-area pt-120 pb-120">
+            <div class="container container-small">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="all-content">
+                            <div class="title-wrapper text-center mb-40">
+                                <h3 class="title">Edit Your Profile</h3>
+                                <!--<h6 class="subtitle">Enter your Credentials to access your account</h6>-->
+                            </div>
+
+                            <div class="signup-form-wrapper">
+                                <div class="item-thumb">
+                                    <form class="contact-us__form" id="contact-us__form" method="POST">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="signup-item">
+                                                    <label>Email</label>
+                                                    <input id="vemail" type="email" placeholder="Enter email address" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="signup-item">
+                                                    <label>Name</label>
+                                                    <input id="vname" type="text" placeholder="Enter your name">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <!--contact-us__textarea-->
+                                                <div class="signup-item">
+                                                    <label>Description</label>
+                                                    <textarea id="vdesc" cols="30" rows="10" placeholder="Description"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="signup-item">
+                                                    <label>Start Time</label>
+                                                    <input id="vst" type="number" placeholder="Enter Start Time">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="signup-item">
+                                                    <label>End Time</label>
+                                                    <input id="vet" type="number" placeholder="Enter End Time">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="signup-item">
+                                                    <label>Price</label>
+                                                    <input id="vprice" type="number" placeholder="Enter Price Per Hour">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="signup-item">
+                                                    <label>Contact</label>
+                                                    <input id="vcontact" type="text" placeholder="Enter Contact">
+                                                </div>
+                                            </div>
+                                            <div class="button">
+                                                <input type="button" value="Edit" class="sing-buttom mb-20" onclick="editProfile()"/>
+                                            </div>
+                                            <div class="bottom-button">
+                                            </div>
+                                            <div id="d1">
+                                                ANSWER WILL BE SHOWN HERE
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- register area end  -->
+    </main>
+
+
+    <!-- FOOTER FRAGMENT -->
+    <div th:insert="footer"></div>
+
+</body>
+
+<!-- Mirrored from rrdevs.net/demos/html/printfix/sing-in.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 24 Apr 2024 07:05:57 GMT -->
+</html>
